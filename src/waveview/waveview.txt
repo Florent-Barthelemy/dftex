@@ -1,0 +1,3 @@
+WaveView Needs the following environnement variables to be set before running :
+
+WV_FFOLD : Fonts folder for WaveView

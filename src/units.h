@@ -1,0 +1,15 @@
+#ifndef UNITS_H
+#define UNITS_H
+
+
+#define UNIT_MS 0.001
+#define UNIT_US 0.000001
+#define UNIT_NS 0.000000001
+#define UNIT_PS 0.000000000001
+#define UNIT_FS 0.000000000000001
+
+#define UNIT_KHZ 1000
+#define UNIT_MHZ 1000000
+#define UNIT_GHZ 1000000000
+
+#endif

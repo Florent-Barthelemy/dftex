@@ -1,0 +1,9 @@
+#Software launch script for UNIX platforms, Debian tested
+
+echo "Setting ENV..."
+export WV_FFOLD='/home/florent/cdev/dfft/build/fonts/'
+export SOFTWARE_EXEC='/home/florent/cdev/dfft/build/dftex'
+
+alias dftex=$SOFTWARE_EXEC
+
+echo "run dftex to launch the software."

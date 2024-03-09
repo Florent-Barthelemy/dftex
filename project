@@ -1,0 +1,6 @@
+The project folders contains the following :
+
+buildsource : files used by the software, needed in the executable directory, copied before compilation in a "build" folder
+envtools    : Simple c++ library to access and manipulate environnement variables
+waveview    : SFML library to plot waves
+root        : all other libraries, makefile and entry point
