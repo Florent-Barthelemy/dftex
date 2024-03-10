@@ -73,7 +73,7 @@ void TestWaveView()
 
 
     //PANE 1
-    PlotPaneTitle title{"Reference : sin(x)@10kHz, Blue : 2*sin(x)@500Hz", 0, 0, 15};
+    PlotPaneTitle title{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Red", 0, 0, 15};
     PlotPane wave0(50, 50, 1000, 200, 25, 2, 3, title);
     wave0.SetXYReferenceSerie(&editedTime, &sinewave2, editedTime.size());
 
@@ -82,7 +82,7 @@ void TestWaveView()
     geometries = wave0.AddSeries(&editedTime, &sinewave3, editedTime2.size(), sf::Color::Green);
 
     //PANE 2
-    PlotPaneTitle title1{"Reference : 2*sin(x)@500Hz, Red : sin(x)@10kHz", 0, 0, 15};
+    PlotPaneTitle title1{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Blue", 0, 0, 15};
     PlotPane wave1(50, 300, 1000, 200, 25, 2, 3, title1);
     wave1.SetXYReferenceSerie(&editedTime, &sinewave, editedTime.size());
 
