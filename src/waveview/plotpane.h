@@ -37,7 +37,7 @@ class PlotPane
         double* xvalues;
         double* yvalues;
         int xlabels; //total number of labels on the x axis
-        int yvscale;
+        double yvscale;
         double x_resolution;
         double xmatch;
         double ymax;

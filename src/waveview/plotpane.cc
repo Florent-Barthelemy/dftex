@@ -142,7 +142,12 @@ int PlotPane::SetXYReferenceSerie(std::vector<double> *xvalues, std::vector<doub
     xdelta = *std::max_element(xvalues->begin(), xvalues->end()) - *std::min_element(xvalues->begin(), xvalues->end());
     ydelta = *std::max_element(yvalues->begin(), yvalues->end()) - *std::min_element(yvalues->begin(), yvalues->end());
     // double xvscale = width/xdelta;
-    yvscale = height / ydelta;
+
+    if(ydelta == 0)
+        yvscale = 0;
+    else
+        yvscale = height / ydelta;
+
     x_resolution = xdelta / width;
     xmatch = width * 1.0 / samplescount;
 
@@ -186,7 +191,7 @@ int PlotPane::AddSeries(std::vector<double> *xvalues, std::vector<double> *yvalu
             // Stop. Save Xpixel, Y points
 
             //Don't question the following, trust the magic
-            ypix_from = (ymax - local_max) * yvscale+ ypos;
+            ypix_from = (ymax - local_max) * yvscale + ypos;
             ypix_to = (ymax - local_min) * yvscale + ypos;
 
             

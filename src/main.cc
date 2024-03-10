@@ -30,13 +30,12 @@ void TestWaveView()
     double sinc = 0;
     for(int i = 0; i < dtime.GetVector()->size(); i++)
     {
-        double xval = 2*M_PI*0.5*UNIT_KHZ*dtime.GetVector()->at(i);
+        double xval = 2*M_PI*5*UNIT_KHZ*dtime.GetVector()->at(i);
         //double sinc = sqrt(pow(sin(xval)/xval, 2));
-        sinc = 2*sin(xval);
+        if(xval != 0)
+            sinc += sin(xval)/xval;
 
-        //Sinc def.
-        //if(xval  == 0)
-          //  sinc = 1;
+    
         
         editedTime.push_back(xval);
         sinewave.push_back(sinc);
@@ -50,14 +49,26 @@ void TestWaveView()
     {
         double xval = 2*M_PI*10*UNIT_KHZ*dtime.GetVector()->at(i);
         //double sinc = sqrt(pow(sin(xval)/xval, 2));
-        sinc = sin(xval);
-
-        //Sinc def.
-        //if(xval  == 0)
-          //  sinc = 1;
+        if(xval != 0)
+            sinc += sin(xval)/xval;
         
         editedTime2.push_back(xval);
         sinewave2.push_back(sinc);
+    }
+
+    std::vector<double> sinewave3;
+    std::vector<double> editedTime3;
+
+    sinc = 0;
+    for(int i = 0; i < dtime.GetVector()->size(); i++)
+    {
+        double xval = 2*M_PI*20*UNIT_KHZ*dtime.GetVector()->at(i);
+        //double sinc = sqrt(pow(sin(xval)/xval, 2));
+        if(xval != 0)
+            sinc += sin(xval)/xval;
+        
+        editedTime3.push_back(xval);
+        sinewave3.push_back(sinc);
     }
 
 
@@ -68,6 +79,7 @@ void TestWaveView()
 
     int geometries = wave0.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
     geometries = wave0.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
+    geometries = wave0.AddSeries(&editedTime, &sinewave3, editedTime2.size(), sf::Color::Green);
 
     //PANE 2
     PlotPaneTitle title1{"Reference : 2*sin(x)@500Hz, Red : sin(x)@10kHz", 0, 0, 15};
@@ -76,6 +88,7 @@ void TestWaveView()
 
     geometries += wave1.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
     geometries += wave1.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
+    geometries += wave1.AddSeries(&editedTime, &sinewave3, editedTime2.size(), sf::Color::Green);
 
     std::cout << "Rendered plot geometries per frame : " << geometries << " -> " << 100*geometries/(wcfg.xsize*wcfg.ysize) << "% filling" << std::endl;
     WaveViewer wv(wcfg);
