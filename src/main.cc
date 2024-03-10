@@ -11,33 +11,32 @@
 #include <SFML/Graphics.hpp>
 
 
-
-
-int main(void)
-{   
+void TestWaveView()
+{
     std::cout << "Running on  : " << EnvTools::GetOsName() << " " << EnvTools::GetMachine() << std::endl;
     std::cout << "Checking WV : " << EnvTools::GetEnvVar(WV_VARENV_FONT_FOLDER) << std::endl;
     WaveViewerConfig wcfg;
-    wcfg.winTitle = "Wave 0";
-    wcfg.xsize = 400;
-    wcfg.ysize = 400;
+    wcfg.winTitle = "Dftex WaveView";
+    wcfg.xsize = 1100;
+    wcfg.ysize = 600;
 
     // DiscreteTime dtime(0*UNIT_MS, 5*UNIT_MS);
-    DiscreteTime dtime(-10*UNIT_MS, 10*UNIT_MS);
-    dtime.Sample(1*UNIT_MHZ); // 1kHz sampling (1ms Te)
+    DiscreteTime dtime(-1*UNIT_MS, 1*UNIT_MS);
+    dtime.Sample(1000*UNIT_KHZ); // 1kHz sampling (1ms Te)
 
     std::vector<double> sinewave;
     std::vector<double> editedTime;
 
+    double sinc = 0;
     for(int i = 0; i < dtime.GetVector()->size(); i++)
     {
-        double xval = 2*M_PI*1*UNIT_KHZ*dtime.GetVector()->at(i);
+        double xval = 2*M_PI*0.5*UNIT_KHZ*dtime.GetVector()->at(i);
         //double sinc = sqrt(pow(sin(xval)/xval, 2));
-        double sinc = sin(xval)/xval;
+        sinc = 2*sin(xval);
 
         //Sinc def.
-        if(xval  == 0)
-            sinc = 1;
+        //if(xval  == 0)
+          //  sinc = 1;
         
         editedTime.push_back(xval);
         sinewave.push_back(sinc);
@@ -46,36 +45,48 @@ int main(void)
     std::vector<double> sinewave2;
     std::vector<double> editedTime2;
 
+    sinc = 0;
     for(int i = 0; i < dtime.GetVector()->size(); i++)
     {
         double xval = 2*M_PI*10*UNIT_KHZ*dtime.GetVector()->at(i);
         //double sinc = sqrt(pow(sin(xval)/xval, 2));
-        double sinc = cos(xval);
-        
+        sinc = sin(xval);
+
         //Sinc def.
-        if(xval  == 0)
-            sinc = 1;
+        //if(xval  == 0)
+          //  sinc = 1;
         
         editedTime2.push_back(xval);
         sinewave2.push_back(sinc);
     }
 
-    PlotPane wave0(50, 50, 300, 300, 20, 20);
 
+    //PANE 1
+    PlotPaneTitle title{"Reference : sin(x)@10kHz, Blue : 2*sin(x)@500Hz", 0, 0, 15};
+    PlotPane wave0(50, 50, 1000, 200, 25, 2, 3, title);
+    wave0.SetXYReferenceSerie(&editedTime, &sinewave2, editedTime.size());
 
-    wave0.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
+    int geometries = wave0.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
+    geometries = wave0.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
 
+    //PANE 2
+    PlotPaneTitle title1{"Reference : 2*sin(x)@500Hz, Red : sin(x)@10kHz", 0, 0, 15};
+    PlotPane wave1(50, 300, 1000, 200, 25, 2, 3, title1);
+    wave1.SetXYReferenceSerie(&editedTime, &sinewave, editedTime.size());
+
+    geometries += wave1.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
+    geometries += wave1.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
+
+    std::cout << "Rendered plot geometries per frame : " << geometries << " -> " << 100*geometries/(wcfg.xsize*wcfg.ysize) << "% filling" << std::endl;
     WaveViewer wv(wcfg);
     wv.AddPlotPane(wave0);
-
-
-
-
-    wv.Launch(41);
-
-   
-
+    wv.AddPlotPane(wave1);
     
-
-    // 
+    wv.Launch(41); 
 }
+
+int main(void)
+{   
+    TestWaveView();
+}
+

@@ -1,3 +1,7 @@
+# Cppcheck
+The make rule "check" creates a cppcheck build directory and checks the source code.
+
+
 The project folders contains the following :
 
 buildsource : files used by the software, needed in the executable directory, copied before compilation in a "build" folder

@@ -1,10 +1,5 @@
 #include "waveview.h"
 
-WaveViewer::WaveViewer(WaveViewerConfig cfg)
-{
-    // config association
-    config = cfg;
-}
 
 void WaveViewer::AddPlotPane(PlotPane plot)
 {
@@ -15,8 +10,10 @@ void WaveViewer::AddPlotPane(PlotPane plot)
 void WaveViewer::Launch(int fpslim)
 {
     sf::RenderWindow win(sf::VideoMode(config.xsize, config.ysize), config.winTitle, sf::Style::Default);
+    
     // Framerate limiting
-    win.setFramerateLimit(fpslim);
+    if(fpslim > 0)
+        win.setFramerateLimit(fpslim);
 
     // Create a font for window texts
     sf::Font font;
@@ -24,10 +21,10 @@ void WaveViewer::Launch(int fpslim)
     std::string fontname = WV_NAME_FONT_DEFAULT;
     font.loadFromFile(fontfolder + fontname);
 
-    sf::Text winInfoText("---", font);
+    winInfoText = *(new sf::Text("---", font));
     winInfoText.setCharacterSize(15);
 
-    winInfoText.setStyle(sf::Text::Bold);
+    //winInfoText.setStyle(sf::Text::Bold);
     winInfoText.setFillColor(sf::Color::Color::White);
     winInfoText.setPosition(0, 0);
 
@@ -59,7 +56,7 @@ void WaveViewer::Launch(int fpslim)
             if (Event.type == sf::Event::Resized)
             {
                 sf::FloatRect visibleArea(0, 0, Event.size.width, Event.size.height);
-                //win.setView(sf::View(visibleArea));
+                win.setView(sf::View(visibleArea));
                 //if the window changed size, ask for a redraw
                 ui_update = true;
             }
@@ -67,30 +64,29 @@ void WaveViewer::Launch(int fpslim)
 
         winSize = win.getSize();
 
-        if(ui_update == true || 1)
+        if(ui_update == true)
         {
             Redraw(win);
             ui_update = false;
         }
             
         
-
-        winInfoText.setString("FPS : " + std::to_string(fpsmean) + "\n" + EnvTools::GetOsName() + " " + EnvTools::GetMachine());
-
         guiloop_stop = std::chrono::steady_clock::now();
 
         // Compute fps
         std::chrono::duration<double> elapsed_seconds{guiloop_stop - guiloop_start};
         fpsmean = (fpsmean + 1 / elapsed_seconds.count()) / 2;
+
+        winInfoText.setString("Render time : " + std::to_string(elapsed_seconds.count()) + "\n" + EnvTools::GetOsName() + " " + EnvTools::GetMachine());
     }
 }
 
 void WaveViewer::Redraw(sf::RenderWindow &win)
 {
     sf::Color bg;
-    bg.r = 50;
-    bg.g = 50;
-    bg.b = 50;
+    bg.r = 27;
+    bg.g = 30;
+    bg.b = 31;
     bg.a = 255;
 
     // Clear the screen (fill it with black color)

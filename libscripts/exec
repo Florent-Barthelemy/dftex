@@ -1,1 +1,5 @@
+#Necessary for compilation
 sudo apt-get install libsfml-dev
+
+#dev oriented
+sudo apt-get install cppcheck

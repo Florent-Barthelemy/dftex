@@ -21,7 +21,7 @@ struct WaveViewerConfig
 class WaveViewer
 {
     public:
-        WaveViewer(WaveViewerConfig cfg);
+        explicit WaveViewer(WaveViewerConfig cfg) : config(cfg) {}
 
         /// @brief Launches the viewer window with specified fps limit. -1 = no limit
         void Launch(int);
@@ -29,6 +29,7 @@ class WaveViewer
         void AddPlotPane(PlotPane plot);
         
     private:
+        sf::Text winInfoText;
         WaveViewerConfig config;
         std::list<sf::Drawable*> toDraw;
         std::list<sf::Drawable*> linesToDraw;

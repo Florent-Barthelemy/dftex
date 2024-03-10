@@ -1,9 +1,10 @@
 #include "discreteTime.h"
 
-DiscreteTime::DiscreteTime(double start_ms, double stop_ms)
+DiscreteTime::DiscreteTime(double start, double stop)
 {
-    this->start_time = start_ms;
-    this->stop_time = stop_ms;
+    this->start_time = start;
+    this->stop_time = stop;
+    this->sampling_freq = 1;
 }
 
 long long int DiscreteTime::Sample(double sampling_freq)

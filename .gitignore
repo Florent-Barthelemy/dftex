@@ -1,3 +1,4 @@
-#ignore build directory and vscode directory
+#ignore build directory and vscode directory and others...
 build/
+cppcheck/
 .vscode/
