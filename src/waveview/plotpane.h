@@ -7,6 +7,7 @@
 #include "../envtools/envtools.h"
 #include "../softenv.h"
 #include <iostream>
+#include <sstream>
 
 struct PlotPaneTitle
 {
@@ -21,7 +22,7 @@ struct PlotPaneTitle
 class PlotPane
 {
     public:
-        PlotPane(int xpos, int ypos, int width, int height, int xticks, int yticks, int xlabels, PlotPaneTitle title);
+        PlotPane(int xpos, int ypos, int width, int height, int xticks, int yticks, int xlabels, int tickLabelPrecision, PlotPaneTitle title);
         std::list<sf::Drawable*>* GetDrawElements(){return &elements;};
         std::list<sf::Drawable*>* GetSeriesLines(){return &seriesElements;};
         int AddSeries(std::vector<double> *xvalues, std::vector<double> *yvalues, int samplescount, sf::Color color);
@@ -34,6 +35,7 @@ class PlotPane
         int ypos;
         int xticks;
         int yticks;
+        int tickLabelPrecision;
         double* xvalues;
         double* yvalues;
         int xlabels; //total number of labels on the x axis

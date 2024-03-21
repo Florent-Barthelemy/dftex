@@ -1,6 +1,6 @@
 #include "plotpane.h"
 
-PlotPane::PlotPane(int xpos, int ypos, int width, int height, int xticks, int yticks, int xlabels, PlotPaneTitle title)
+PlotPane::PlotPane(int xpos, int ypos, int width, int height, int xticks, int yticks, int xlabels,int tickLabelPrecision, PlotPaneTitle title)
 {
     this->width = width;
     this->height = height;
@@ -15,6 +15,8 @@ PlotPane::PlotPane(int xpos, int ypos, int width, int height, int xticks, int yt
     this->paneTitle = title;
     this->xlabels = xlabels;
 
+    this->tickLabelPrecision = tickLabelPrecision; 
+
     // Setting up font for this plot pane
     std::string fontfolder = EnvTools::GetEnvVar(WV_VARENV_FONT_FOLDER);
     std::string fontname = WV_NAME_FONT_DEFAULT;
@@ -27,7 +29,7 @@ sf::Text *PlotPane::CenteredOriginText(std::string text, sf::Font font, int size
     textObj->setFillColor(textColor);
     textObj->setCharacterSize(size);
     sf::FloatRect textRect = textObj->getLocalBounds();
-    textObj->setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    textObj->setOrigin((int)(textRect.left + textRect.width / 2.0f), (int)(textRect.top + textRect.height / 2.0f));
 
     return textObj;
 }
@@ -47,7 +49,7 @@ void PlotPane::DrawPane(std::vector<double> *xvalues, std::vector<double> *yvalu
 {
     // Title text
     sf::Text *tickText = CenteredOriginText(title.text, paneFont, title.size, sf::Color::White);
-    tickText->setPosition(sf::Vector2f((xpos + width / 2) + title.xoffset, ypos - 10 - title.yoffset));
+    tickText->setPosition(sf::Vector2f((int)((xpos + width / 2) + title.xoffset), (int)ypos - 10 - title.yoffset));
     elements.push_back(tickText);
 
     // Left box line
@@ -118,13 +120,20 @@ void PlotPane::DrawPane(std::vector<double> *xvalues, std::vector<double> *yvalu
     double xvscale = samplescount / width;
 
     std::string tickt;
+    std::stringstream converter;
+    converter.precision(tickLabelPrecision);
+
 
     for (int i = 0; i < xlabels; i++)
     {
-        tickt = std::to_string(xvalues->at((labelPos - xpos) * xvscale));
+        //flush stream & convert the double to string via stringstream
+        converter.str(std::string());
+        converter << std::scientific << xvalues->at((labelPos - xpos) * xvscale);
+
+        tickt = converter.str();
 
         // Creating tick text
-        sf::Text *tt = CenteredOriginText(tickt, paneFont, 15, sf::Color::White);
+        sf::Text *tt = CenteredOriginText(tickt, paneFont, 16, sf::Color::White);
         tt->setPosition(sf::Vector2f(labelPos, ypos + height + 10));
         elements.push_back(tt);
 
@@ -194,8 +203,6 @@ int PlotPane::AddSeries(std::vector<double> *xvalues, std::vector<double> *yvalu
             ypix_from = (ymax - local_max) * yvscale + ypos;
             ypix_to = (ymax - local_min) * yvscale + ypos;
 
-            
-
             for (int ii = ypix_from; ii <= ypix_to; ii++)
             {
                 sf::RectangleShape *rect = new sf::RectangleShape();
@@ -229,7 +236,6 @@ int PlotPane::AddSeries(std::vector<double> *xvalues, std::vector<double> *yvalu
         }
 
         // local min and max are used to plot the constant x line
-
         // update local min
         if (yval < local_min)
             local_min = yval;

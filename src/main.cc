@@ -73,22 +73,22 @@ void TestWaveView()
 
 
     //PANE 1
-    PlotPaneTitle title{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Red", 0, 0, 15};
-    PlotPane wave0(50, 50, 1000, 200, 25, 2, 3, title);
-    wave0.SetXYReferenceSerie(&editedTime, &sinewave2, editedTime.size());
+    PlotPaneTitle title{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Red", 0, 0, 18};
+    PlotPane wave0(50, 50, 1000, 200, 25, 2, 3, 2, title);
+    wave0.SetXYReferenceSerie(dtime.GetVector(), &sinewave2, editedTime.size());
 
-    int geometries = wave0.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
-    geometries = wave0.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
-    geometries = wave0.AddSeries(&editedTime, &sinewave3, editedTime2.size(), sf::Color::Green);
+    int geometries = wave0.AddSeries(dtime.GetVector(), &sinewave, editedTime.size(), sf::Color::Blue);
+    geometries = wave0.AddSeries(dtime.GetVector(), &sinewave2, editedTime2.size(), sf::Color::Red);
+    geometries = wave0.AddSeries(dtime.GetVector(), &sinewave3, editedTime2.size(), sf::Color::Green);
 
     //PANE 2
-    PlotPaneTitle title1{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Blue", 0, 0, 15};
-    PlotPane wave1(50, 300, 1000, 200, 25, 2, 3, title1);
-    wave1.SetXYReferenceSerie(&editedTime, &sinewave, editedTime.size());
+    PlotPaneTitle title1{"integral of sinc(2*pi*f*t) for different frequencies, Reference : Blue", 0, 0, 18};
+    PlotPane wave1(50, 300, 1000, 200, 25, 2, 3, 2, title1);
+    wave1.SetXYReferenceSerie(dtime.GetVector(), &sinewave, editedTime.size());
 
-    geometries += wave1.AddSeries(&editedTime, &sinewave, editedTime.size(), sf::Color::Blue);
-    geometries += wave1.AddSeries(&editedTime, &sinewave2, editedTime2.size(), sf::Color::Red);
-    geometries += wave1.AddSeries(&editedTime, &sinewave3, editedTime2.size(), sf::Color::Green);
+    geometries += wave1.AddSeries(dtime.GetVector(), &sinewave, editedTime.size(), sf::Color::Blue);
+    geometries += wave1.AddSeries(dtime.GetVector(), &sinewave2, editedTime2.size(), sf::Color::Red);
+    geometries += wave1.AddSeries(dtime.GetVector(), &sinewave3, editedTime2.size(), sf::Color::Green);
 
     std::cout << "Rendered plot geometries per frame : " << geometries << " -> " << 100*geometries/(wcfg.xsize*wcfg.ysize) << "% filling" << std::endl;
     WaveViewer wv(wcfg);

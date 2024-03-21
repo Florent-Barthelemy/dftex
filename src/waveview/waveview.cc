@@ -1,6 +1,5 @@
 #include "waveview.h"
 
-
 void WaveViewer::AddPlotPane(PlotPane plot)
 {
     toDraw.merge(*plot.GetDrawElements());
@@ -10,9 +9,9 @@ void WaveViewer::AddPlotPane(PlotPane plot)
 void WaveViewer::Launch(int fpslim)
 {
     sf::RenderWindow win(sf::VideoMode(config.xsize, config.ysize), config.winTitle, sf::Style::Default);
-    
+
     // Framerate limiting
-    if(fpslim > 0)
+    if (fpslim > 0)
         win.setFramerateLimit(fpslim);
 
     // Create a font for window texts
@@ -24,7 +23,7 @@ void WaveViewer::Launch(int fpslim)
     winInfoText = *(new sf::Text("---", font));
     winInfoText.setCharacterSize(15);
 
-    //winInfoText.setStyle(sf::Text::Bold);
+    // winInfoText.setStyle(sf::Text::Bold);
     winInfoText.setFillColor(sf::Color::Color::White);
     winInfoText.setPosition(0, 0);
 
@@ -39,6 +38,9 @@ void WaveViewer::Launch(int fpslim)
     float fpsmean = 0;
 
     bool ui_update = true;
+
+    int mouseX;
+    int mouseY;
 
     while (win.isOpen())
     {
@@ -57,20 +59,26 @@ void WaveViewer::Launch(int fpslim)
             {
                 sf::FloatRect visibleArea(0, 0, Event.size.width, Event.size.height);
                 win.setView(sf::View(visibleArea));
-                //if the window changed size, ask for a redraw
+                // if the window changed size, ask for a redraw
                 ui_update = true;
+            }
+
+            if (Event.type == sf::Event::MouseMoved)
+            {
+                // std::cout << "MouseX : " << Event.mouseMove.x << "MouseY : " << Event.mouseMove.y << std::endl;
+                // mouseX = Event.mouseMove.x;
+                // mouseY = Event.mouseMove.y;
             }
         }
 
         winSize = win.getSize();
 
-        if(ui_update == true)
+        if (ui_update == true)
         {
             Redraw(win);
             ui_update = false;
         }
-            
-        
+
         guiloop_stop = std::chrono::steady_clock::now();
 
         // Compute fps
